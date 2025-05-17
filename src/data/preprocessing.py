@@ -74,3 +74,27 @@ def fill_numeric_missing(train, test, numeric_features):
         test[feature] = test[feature].fillna(mean_value)
         
     return train, test 
+
+def preprocess(train_path, test_path):
+    train, test = load_data(train_path, test_path)
+    
+    # 특성과 타겟 변수 분리
+    train = train.drop(columns=['ID'], axis=1)
+    test = test.drop(columns=['ID'], axis=1)
+    
+    
+    train, test = encode_categorical_feature(train, test, category_features)
+    train, test = map_boolean_features(train, test, bool_features)
+    train, test = fill_numeric_missing(train, test, numeric_features)
+    
+    output_dir="data/processed"
+    os.makedirs(output_dir, exist_ok=True)
+    train.to_csv(f"../{output_dir}/train_processed.csv", index=False)
+    test.to_csv(f"../{output_dir}/test_processed.csv", index=False)
+
+if __name__ == "__main__":
+    train_path = "../data/raw/train.csv"
+    test_path = "../data/raw/test.csv"
+    
+    preprocess(train_path, test_path)
+    print("전처리 완료!")
