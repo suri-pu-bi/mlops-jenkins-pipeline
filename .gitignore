@@ -3,3 +3,5 @@ data/raw
 data/processed
 .dvc/config
 mlruns
+src/data/__pycache__
+src/utils/__pycache__
